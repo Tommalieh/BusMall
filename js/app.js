@@ -47,8 +47,10 @@ for(var i = 0; i< items.length ; i++){
 
 
 
-  createThreeRandImages();
-
+  while ((leftImageAttribute === centerImageAttribute || leftImageAttribute === rightImageAttribute) || centerImageAttribute  === rightImageAttribute){
+    console.log(event);
+    createThreeRandImages();
+}
 
 
 
