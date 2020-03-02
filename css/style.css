@@ -12,7 +12,9 @@ img {
     display: inline-block;
 }
 
-
+img:hover{
+    cursor: pointer;
+}
 
 /* ul{
     display: block;
