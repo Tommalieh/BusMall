@@ -21,7 +21,6 @@ var items = [
   'wine-glass.jpg'
 ];
 
-var itemsCreated = [];
 var leftImage;
 var centerImage;
 var rightImage;
@@ -36,6 +35,9 @@ var event;
 var viewedImagesArr = [];
 var imagesClicks = [];
 var imagesViews = [];
+var list;
+var information;
+var chart;
 
 function Item(name) {
   this.name = name.split(',')[0];
@@ -43,11 +45,20 @@ function Item(name) {
   this.clicks = 0;
   this.views = 0;
   itemsCreated.push(this);
-
 }
 
-for (var i = 0; i < items.length; i++) {
-  new Item(items[i]);
+var itemsCreated = [];
+
+
+
+if (!localStorage.getItem('arrayObjects')) {
+  for (var i = 0; i < items.length; i++) {
+    new Item(items[i]);
+  }
+}
+else {
+  getItem();
+  creatChart();
 }
 
 
@@ -63,7 +74,6 @@ var images = document.getElementsByTagName('img');
 for (var j = 0; j < images.length; j++) {
   images[j].addEventListener('click', randomImage);
 }
-
 
 
 
@@ -97,19 +107,52 @@ function randomImage(e) {
     }
   }
 
+  // setItem();
 
   if (views > 24) {
-    createReport();
+
     for (var n = 0; n < itemsCreated.length; n++) {
       imagesClicks.push(itemsCreated[n].clicks);
       imagesViews.push(itemsCreated[n].views);
+
     }
+    if (list) {
+       information = document.getElementById('info');
+       information.removeChild(list);
+    }
+
+    createReport();
     creatChart();
+    
   }
 
+  setItem();
   createThreeRandImages();
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -174,8 +217,8 @@ function createThreeRandImages() {
 
 function createReport() {
 
-  var information = document.getElementById('info');
-  var list = document.createElement('ul');
+  information = document.getElementById('info');
+  list = document.createElement('ul');
   console.log(list);
   information.appendChild(list);
   for (var i = 0; i < items.length; i++) {
@@ -189,7 +232,7 @@ function createReport() {
 
 
 
-function creatChart(){
+function creatChart() {
 
   var ctx = document.getElementById('myChart').getContext('2d');
   var myChart = new Chart(ctx, {
@@ -235,5 +278,18 @@ function creatChart(){
       }
     }
   });
+}
+
+function setItem() {
+  var objArr = JSON.stringify(itemsCreated);
+  localStorage.setItem('arrayObjects', objArr);
+}
+
+
+function getItem() {
+
+  var arrayObjects = localStorage.getItem('arrayObjects');
+  itemsCreated = JSON.parse(arrayObjects);
+  createReport()
 }
 
